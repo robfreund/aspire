@@ -9,11 +9,11 @@ import (
 func CapitalizeEveryThirdAlphanumericChar(s string) string {
 	ct := 0
 	var sb strings.Builder
-	for i, v := range s {
+	for _, v := range s {
 		if IsDigit(v) || IsLetter(v) {
 			ct++
 		}
-		if ct%3 == 0 && i > 0 {
+		if ct%3 == 0 {
 			v = ToUpper(v)
 			ct = 0
 		} else {
