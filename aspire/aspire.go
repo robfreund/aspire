@@ -6,6 +6,7 @@ import (
 	. "unicode"
 )
 
+// CapitalizeEveryThirdAlphanumericChar will capitalize every 3 alpha char and return string
 func CapitalizeEveryThirdAlphanumericChar(s string) string {
 	ct := 0
 	var sb strings.Builder
@@ -24,23 +25,29 @@ func CapitalizeEveryThirdAlphanumericChar(s string) string {
 	return sb.String()
 }
 
+// Interface for transforming rune slice
 type Interface interface {
+	// TransformRune will transform at pos
 	TransformRune(pos int)
+	// GetValueAsRuneSlice returns the rune slice
 	GetValueAsRuneSlice() []rune
 }
 
+// MapString will perform transform on rune slice
 func MapString(i Interface) {
 	for pos := range i.GetValueAsRuneSlice() {
 		i.TransformRune(pos)
 	}
 }
 
+// Skipper implements Interface and will perform skip logic on the provided value
 type Skipper struct {
 	skip  int
 	value []rune
 	ct    *int
 }
 
+// NewSkipString is a skipper that will transform by capitalizing skip [alpha char] characters in value
 func NewSkipString(skip int, value string) Skipper {
 	return Skipper{
 		skip:  skip,
@@ -49,6 +56,7 @@ func NewSkipString(skip int, value string) Skipper {
 	}
 }
 
+// TransformRune will perform transform at pos
 func (s Skipper) TransformRune(pos int) {
 	r := s.value[pos]
 	r = ToLower(r)
@@ -62,10 +70,12 @@ func (s Skipper) TransformRune(pos int) {
 	s.value[pos] = r
 }
 
+// GetValueAsRuneSlice will return the rune slice of skipper value
 func (s Skipper) GetValueAsRuneSlice() []rune {
 	return s.value
 }
 
+// String is the stringer implementation
 func (s Skipper) String() string {
 	return fmt.Sprintf("%s", string(s.value))
 }
