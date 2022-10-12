@@ -50,7 +50,7 @@ type Skipper struct {
 	ct    *int
 }
 
-// NewSkipString is a skipper that will transform by capitalizing skip [alpha char] characters in value
+// NewSkipString is a skipper that will transform by capitalizing skip [alpha , numeric] characters in value
 func NewSkipString(skip int, value string) Skipper {
 	return Skipper{
 		skip:  skip,
