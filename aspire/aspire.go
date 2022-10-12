@@ -8,15 +8,18 @@ import (
 
 // CapitalizeEveryThirdAlphanumericChar will capitalize every 3 alpha char and return string
 func CapitalizeEveryThirdAlphanumericChar(s string) string {
-	ct := 0
+	count := 0
 	var sb strings.Builder
 	for _, v := range s {
+
+		// is alpha numeric inc count
 		if IsDigit(v) || IsLetter(v) {
-			ct++
+			count++
 		}
-		if ct%3 == 0 {
+		// if count is reached upper
+		if count%3 == 0 {
 			v = ToUpper(v)
-			ct = 0
+			count = 0
 		} else {
 			v = ToLower(v)
 		}
@@ -56,13 +59,19 @@ func NewSkipString(skip int, value string) Skipper {
 	}
 }
 
+// isAlphaNumeric checks if r is alpha numeric
+func isAlphaNumeric(r rune) bool {
+	return IsDigit(r) || IsLetter(r)
+}
+
 // TransformRune will perform transform at pos
 func (s Skipper) TransformRune(pos int) {
 	r := s.value[pos]
 	r = ToLower(r)
-	if IsDigit(r) || IsLetter(r) {
+	if isAlphaNumeric(r) {
 		*s.ct++
 	}
+	// if we reached skip count upper
 	if *s.ct%s.skip == 0 && pos > 0 {
 		r = ToUpper(r)
 		*s.ct = 0
